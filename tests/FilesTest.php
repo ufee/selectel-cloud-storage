@@ -1,10 +1,11 @@
 <?php
 
 use ArgentCrusade\Selectel\CloudStorage\CloudStorage;
+use PHPUnit\Framework\TestCase;
 
-class FilesTest extends PHPUnit_Framework_TestCase
+class FilesTest extends TestCase
 {
-    public function tearDown()
+    public function tearDown(): void
     {
         Mockery::close();
     }
@@ -19,7 +20,7 @@ class FilesTest extends PHPUnit_Framework_TestCase
             ];
 
             foreach ($requests as $request) {
-                $api->shouldReceive('request')
+                $api->expects('request')
                     ->with($request['method'], $request['url'], $request['params'])
                     ->andReturn($request['response']);
             }
@@ -52,14 +53,14 @@ class FilesTest extends PHPUnit_Framework_TestCase
             ];
 
             foreach ($requests as $request) {
-                $api->shouldReceive('request')
+                $api->expects('request')
                     ->with($request['method'], $request['url'], $request['params'])
                     ->andReturn($request['response']);
             }
 
             $readRequest = $this->readFileRequest('/container1/web/index.html');
 
-            $api->shouldReceive('request')
+            $api->expects('request')
                 ->with($readRequest['method'], $readRequest['url'])
                 ->andReturn($readRequest['response']);
         });
@@ -84,14 +85,14 @@ class FilesTest extends PHPUnit_Framework_TestCase
             ];
 
             foreach ($requests as $request) {
-                $api->shouldReceive('request')
+                $api->expects('request')
                     ->with($request['method'], $request['url'], $request['params'])
                     ->andReturn($request['response']);
             }
 
             $readRequest = $this->readFileRequest('/container1/web/index.html');
 
-            $api->shouldReceive('request')
+            $api->expects('request')
                 ->with($readRequest['method'], $readRequest['url'])
                 ->andReturn($readRequest['response']);
         });
@@ -105,7 +106,7 @@ class FilesTest extends PHPUnit_Framework_TestCase
         $buffer = '';
         $stream = $file->readStream();
 
-        $this->assertInternalType('resource', $stream);
+        $this->assertIsResource($stream);
 
         while (!feof($stream)) {
             $buffer .= fread($stream, 1024);
@@ -127,14 +128,14 @@ class FilesTest extends PHPUnit_Framework_TestCase
             ];
 
             foreach ($requests as $request) {
-                $api->shouldReceive('request')
+                $api->expects('request')
                     ->with($request['method'], $request['url'], $request['params'])
                     ->andReturn($request['response']);
             }
 
             $deleteRequest = $this->deleteFileRequest('/container1/web/index.html');
 
-            $api->shouldReceive('request')
+            $api->expects('request')
                 ->with($deleteRequest['method'], $deleteRequest['url'])
                 ->andReturn($deleteRequest['response']);
         });
@@ -144,11 +145,11 @@ class FilesTest extends PHPUnit_Framework_TestCase
         $container = $containers->get('container1');
 
         $file = $container->files()->find('/web/index.html');
- 
+
         $this->assertEquals('index.html', $file->name());
- 
+
         $file->rename('index2.html');
- 
+
         $this->assertEquals('index2.html', $file->name());
         $this->assertEquals('web/index2.html', $file->path());
     }
@@ -165,7 +166,7 @@ class FilesTest extends PHPUnit_Framework_TestCase
             ];
 
             foreach ($requests as $request) {
-                $api->shouldReceive('request')
+                $api->expects('request')
                     ->with($request['method'], $request['url'], $request['params'])
                     ->andReturn($request['response']);
             }
@@ -176,12 +177,12 @@ class FilesTest extends PHPUnit_Framework_TestCase
         $container = $containers->get('container1');
 
         $file = $container->files()->find('/web/index.html');
- 
+
         $this->assertEquals('index.html', $file->name());
 
         $copyWithinContainerResult = $file->copy('web/index2.html');
         $copyToAnotherContainerResult = $file->copy('web/index2.html', 'container2');
- 
+
         $this->assertEquals('/container1/web/index2.html', $copyWithinContainerResult);
         $this->assertEquals('/container2/web/index2.html', $copyToAnotherContainerResult);
     }
@@ -196,14 +197,14 @@ class FilesTest extends PHPUnit_Framework_TestCase
             ];
 
             foreach ($requests as $request) {
-                $api->shouldReceive('request')
+                $api->expects('request')
                     ->with($request['method'], $request['url'], $request['params'])
                     ->andReturn($request['response']);
             }
 
             $deleteRequest = $this->deleteFileRequest('/container1/web/index.html');
 
-            $api->shouldReceive('request')
+            $api->expects('request')
                 ->with($deleteRequest['method'], $deleteRequest['url'])
                 ->andReturn($deleteRequest['response']);
         });

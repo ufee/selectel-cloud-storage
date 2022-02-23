@@ -5,7 +5,7 @@ use GuzzleHttp\Psr7\Response;
 
 class TestHelpers
 {
-    public static function mockApi($methods = [], $callback = null)
+    public static function mockApi($methods = [], $callback = null): mixed
     {
         if (is_callable($methods)) {
             $callback = $methods;
@@ -19,7 +19,7 @@ class TestHelpers
         $methods[] = 'storageUrl';
 
         $api = Mockery::mock(ApiClient::class.'['.implode(',', $methods).']', ['username', 'password']);
-        $api->shouldReceive('storageUrl')->atLeast()->once()->andReturn('http://xxx.selcdn.ru');
+        $api->allows('storageUrl')->atLeast()->once()->andReturns('http://xxx.selcdn.ru');
 
         if (is_callable($callback)) {
             $callback($api);

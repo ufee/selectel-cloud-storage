@@ -1,8 +1,10 @@
 <?php
 
+use ArgentCrusade\Selectel\CloudStorage\Contracts\Collections\CollectionContract;
 use ArgentCrusade\Selectel\CloudStorage\FluentFilesLoader;
+use PHPUnit\Framework\TestCase;
 
-class FluentFilesLoaderTest extends PHPUnit_Framework_TestCase
+class FluentFilesLoaderTest extends TestCase
 {
     /** @test */
     function directory_loader()
@@ -15,7 +17,13 @@ class FluentFilesLoaderTest extends PHPUnit_Framework_TestCase
 
         $loader = new FluentFilesLoader($api, 'test', '/test');
 
-        $loader->fromDirectory('/test-directory')->get();
+        $files = $loader->fromDirectory('/test-directory')->get();
+
+        $this->assertInstanceOf(CollectionContract::class, $files);
+        $this->assertCount(2, $files);
+        foreach ($files as $file) {
+            $this->assertIsString($file['name']);
+        }
     }
 
     /** @test */
@@ -29,7 +37,13 @@ class FluentFilesLoaderTest extends PHPUnit_Framework_TestCase
 
         $loader = new FluentFilesLoader($api, 'test', '/test');
 
-        $loader->withPrefix('test-directory/image-')->get();
+        $files = $loader->withPrefix('test-directory/image-')->get();
+
+        $this->assertInstanceOf(CollectionContract::class, $files);
+        $this->assertCount(2, $files);
+        foreach ($files as $file) {
+            $this->assertIsString($file['name']);
+        }
     }
 
     /** @test */
@@ -43,7 +57,13 @@ class FluentFilesLoaderTest extends PHPUnit_Framework_TestCase
 
         $loader = new FluentFilesLoader($api, 'test', '/test');
 
-        $loader->withDelimiter('test')->get();
+        $files = $loader->withDelimiter('test')->get();
+
+        $this->assertInstanceOf(CollectionContract::class, $files);
+        $this->assertCount(2, $files);
+        foreach ($files as $file) {
+            $this->assertIsString($file['name']);
+        }
     }
 
     /** @test */
@@ -57,7 +77,13 @@ class FluentFilesLoaderTest extends PHPUnit_Framework_TestCase
 
         $loader = new FluentFilesLoader($api, 'test', '/test');
 
-        $loader->limit(5)->get();
+        $files = $loader->limit(5)->get();
+
+        $this->assertInstanceOf(CollectionContract::class, $files);
+        $this->assertCount(2, $files);
+        foreach ($files as $file) {
+            $this->assertIsString($file['name']);
+        }
     }
 
     /** @test */
@@ -72,7 +98,13 @@ class FluentFilesLoaderTest extends PHPUnit_Framework_TestCase
 
         $loader = new FluentFilesLoader($api, 'test', '/test');
 
-        $loader->limit(5, 'last-previous-file.txt')->get();
+        $files = $loader->limit(5, 'last-previous-file.txt')->get();
+
+        $this->assertInstanceOf(CollectionContract::class, $files);
+        $this->assertCount(2, $files);
+        foreach ($files as $file) {
+            $this->assertIsString($file['name']);
+        }
     }
 
     /** @test */
@@ -87,9 +119,15 @@ class FluentFilesLoaderTest extends PHPUnit_Framework_TestCase
 
         $loader = new FluentFilesLoader($api, 'test', '/test');
 
-        $loader->fromDirectory('/test')
+        $files = $loader->fromDirectory('/test')
             ->withPrefix('file-')
             ->get();
+
+        $this->assertInstanceOf(CollectionContract::class, $files);
+        $this->assertCount(2, $files);
+        foreach ($files as $file) {
+            $this->assertIsString($file['name']);
+        }
     }
 
     /** @test */
@@ -107,11 +145,17 @@ class FluentFilesLoaderTest extends PHPUnit_Framework_TestCase
 
         $loader = new FluentFilesLoader($api, 'test', '/test');
 
-        $loader->fromDirectory('/test')
+        $files = $loader->fromDirectory('/test')
             ->withPrefix('/file-')
             ->withDelimiter('test')
             ->limit(10, 'last-previous-file.txt')
             ->get();
+
+        $this->assertInstanceOf(CollectionContract::class, $files);
+        $this->assertCount(2, $files);
+        foreach ($files as $file) {
+            $this->assertIsString($file['name']);
+        }
     }
 
     /** @test */
@@ -137,7 +181,7 @@ class FluentFilesLoaderTest extends PHPUnit_Framework_TestCase
             ->get();
 
         foreach ($files as $file) {
-            $this->assertInternalType('string', $file->name());
+            $this->assertIsString($file->name());
         }
     }
 
@@ -158,7 +202,7 @@ class FluentFilesLoaderTest extends PHPUnit_Framework_TestCase
             $path = '';
         }
 
-        $api->shouldReceive('request')
+        $api->expects('request')
             ->with('GET', '/test', [
                 'query' => compact('limit', 'marker', 'path', 'prefix', 'delimiter'),
             ])

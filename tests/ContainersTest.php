@@ -1,11 +1,11 @@
 <?php
 
 use ArgentCrusade\Selectel\CloudStorage\CloudStorage;
-use ArgentCrusade\Selectel\CloudStorage\Exceptions\ApiRequestFailedException;
+use PHPUnit\Framework\TestCase;
 
-class ContainersTest extends PHPUnit_Framework_TestCase
+class ContainersTest extends TestCase
 {
-    public function tearDown()
+    public function tearDown(): void
     {
         Mockery::close();
     }
@@ -17,11 +17,11 @@ class ContainersTest extends PHPUnit_Framework_TestCase
             $createContainerRequest = $this->getCreateContainerRequest('container1', 'public');
             $containerRequest = $this->getContainerRequest('container1');
 
-            $api->shouldReceive('request')
+            $api->expects('request')
                 ->with($createContainerRequest['method'], $createContainerRequest['url'], $createContainerRequest['params'])
                 ->andReturn($createContainerRequest['response']);
 
-            $api->shouldReceive('request')
+            $api->expects('request')
                 ->with($containerRequest['method'], $containerRequest['url'])
                 ->andReturn($containerRequest['response']);
         });
@@ -29,6 +29,7 @@ class ContainersTest extends PHPUnit_Framework_TestCase
         $storage = new CloudStorage($api);
 
         $container = $storage->createContainer('container1');
+        $container->type();
 
         $this->assertEquals('container1', $container->name());
     }
@@ -39,7 +40,7 @@ class ContainersTest extends PHPUnit_Framework_TestCase
         $api = TestHelpers::mockApi(function ($api) {
             $request = $this->listContainersRequest();
 
-            $api->shouldReceive('request')
+            $api->expects('request')
                 ->with($request['method'], $request['url'], $request['params'])
                 ->andReturn($request['response']);
         });
@@ -47,7 +48,7 @@ class ContainersTest extends PHPUnit_Framework_TestCase
         $storage = new CloudStorage($api);
         $containers = $storage->containers();
 
-        $this->assertEquals(3, count($containers));
+        $this->assertCount(3, $containers);
     }
 
     /** @test */
@@ -56,7 +57,7 @@ class ContainersTest extends PHPUnit_Framework_TestCase
         $api = TestHelpers::mockApi(function ($api) {
             $request = $this->listContainersRequest();
 
-            $api->shouldReceive('request')
+            $api->expects('request')
                 ->with($request['method'], $request['url'], $request['params'])
                 ->andReturn($request['response']);
         });
@@ -81,7 +82,7 @@ class ContainersTest extends PHPUnit_Framework_TestCase
         $api = TestHelpers::mockApi(function ($api) {
             $request = $this->listContainersRequest();
 
-            $api->shouldReceive('request')
+            $api->expects('request')
                 ->with($request['method'], $request['url'], $request['params'])
                 ->andReturn($request['response']);
         });
@@ -101,7 +102,7 @@ class ContainersTest extends PHPUnit_Framework_TestCase
         $api = TestHelpers::mockApi(function ($api) {
             $request = $this->listContainersRequest();
 
-            $api->shouldReceive('request')
+            $api->expects('request')
                 ->with($request['method'], $request['url'], $request['params'])
                 ->andReturn($request['response']);
         });
@@ -126,7 +127,7 @@ class ContainersTest extends PHPUnit_Framework_TestCase
             ];
 
             foreach ($requests as $request) {
-                $api->shouldReceive('request')
+                $api->expects('request')
                     ->with($request['method'], $request['url'], $request['params'])
                     ->andReturn($request['response']);
             }
@@ -137,7 +138,7 @@ class ContainersTest extends PHPUnit_Framework_TestCase
         $container = $containers->get('container1');
         $files = $container->files()->get();
 
-        $this->assertEquals(3, count($files));
+        $this->assertCount(3, $files);
     }
 
     /** @test */
@@ -150,7 +151,7 @@ class ContainersTest extends PHPUnit_Framework_TestCase
             ];
 
             foreach ($requests as $request) {
-                $api->shouldReceive('request')
+                $api->expects('request')
                     ->with($request['method'], $request['url'], $request['params'])
                     ->andReturn($request['response']);
             }
@@ -181,7 +182,7 @@ class ContainersTest extends PHPUnit_Framework_TestCase
             ];
 
             foreach ($requests as $request) {
-                $api->shouldReceive('request')
+                $api->expects('request')
                     ->with($request['method'], $request['url'], $request['params'])
                     ->andReturn($request['response']);
             }
@@ -211,7 +212,7 @@ class ContainersTest extends PHPUnit_Framework_TestCase
             ];
 
             foreach ($requests as $request) {
-                $api->shouldReceive('request')
+                $api->expects('request')
                     ->with($request['method'], $request['url'], $request['params'])
                     ->andReturn($request['response']);
             }
@@ -244,7 +245,7 @@ class ContainersTest extends PHPUnit_Framework_TestCase
             ];
 
             foreach ($requests as $request) {
-                $api->shouldReceive('request')
+                $api->expects('request')
                     ->with($request['method'], $request['url'], $request['params'])
                     ->andReturn($request['response']);
             }
@@ -263,7 +264,7 @@ class ContainersTest extends PHPUnit_Framework_TestCase
         $api = TestHelpers::mockApi(function ($api) {
             $request = $this->getContainerRequest('container1');
 
-            $api->shouldReceive('request')
+            $api->expects('request')
                 ->with($request['method'], $request['url'])
                 ->andReturn($request['response']);
         });
@@ -286,7 +287,7 @@ class ContainersTest extends PHPUnit_Framework_TestCase
         $api = TestHelpers::mockApi(function ($api) {
             $request = $this->getContainerRequest('container1');
 
-            $api->shouldReceive('request')
+            $api->expects('request')
                 ->with($request['method'], $request['url'])
                 ->andReturn($request['response']);
         });
@@ -311,7 +312,7 @@ class ContainersTest extends PHPUnit_Framework_TestCase
         $api = TestHelpers::mockApi(function ($api) {
             $containerRequest = $this->getContainerRequest('container1');
 
-            $api->shouldReceive('request')
+            $api->expects('request')
                 ->with($containerRequest['method'], $containerRequest['url'])
                 ->andReturn($containerRequest['response']);
 
@@ -322,7 +323,7 @@ class ContainersTest extends PHPUnit_Framework_TestCase
             ];
 
             foreach ($requests as $request) {
-                $api->shouldReceive('request')
+                $api->expects('request')
                     ->with($request['method'], $request['url'], $request['params'])
                     ->andReturn($request['response']);
             }
@@ -349,7 +350,7 @@ class ContainersTest extends PHPUnit_Framework_TestCase
         $api = TestHelpers::mockApi(function ($api) {
             $containerRequest = $this->getContainerRequest('container1');
 
-            $api->shouldReceive('request')
+            $api->expects('request')
                 ->with($containerRequest['method'], $containerRequest['url'])
                 ->andReturn($containerRequest['response']);
 
@@ -359,13 +360,14 @@ class ContainersTest extends PHPUnit_Framework_TestCase
                 'X-Container-Meta-Bar' => 'Baz',
             ]);
 
-            $api->shouldReceive('request')
+            $api->expects('request')
                 ->with($request['method'], $request['url'], $request['params'])
                 ->andReturn($request['response']);
         });
 
         $storage = new CloudStorage($api);
         $container = $storage->getContainer('container1');
+        $container->type();
 
         $this->assertTrue(
             $container->setMeta([
@@ -383,17 +385,18 @@ class ContainersTest extends PHPUnit_Framework_TestCase
             $containerRequest = $this->getContainerRequest('container1');
             $createDirRequest = $this->getDirectoryCreateRequest('/container1/test-directory');
 
-            $api->shouldReceive('request')
+            $api->expects('request')
                 ->with($containerRequest['method'], $containerRequest['url'])
                 ->andReturn($containerRequest['response']);
 
-            $api->shouldReceive('request')
+            $api->expects('request')
                 ->with($createDirRequest['method'], $createDirRequest['url'], $createDirRequest['params'])
                 ->andReturn($createDirRequest['response']);
         });
 
         $storage = new CloudStorage($api);
         $container = $storage->getContainer('container1');
+        $container->type();
 
         $this->assertEquals(md5('test'), $container->createDir('/test-directory'));
     }
@@ -405,17 +408,18 @@ class ContainersTest extends PHPUnit_Framework_TestCase
             $containerRequest = $this->getContainerRequest('container1');
             $deleteDirRequest = $this->getDirectoryDeleteRequest('/container1/test-directory');
 
-            $api->shouldReceive('request')
+            $api->expects('request')
                 ->with($containerRequest['method'], $containerRequest['url'])
                 ->andReturn($containerRequest['response']);
 
-            $api->shouldReceive('request')
+            $api->expects('request')
                 ->with($deleteDirRequest['method'], $deleteDirRequest['url'])
                 ->andReturn($deleteDirRequest['response']);
         });
 
         $storage = new CloudStorage($api);
         $container = $storage->getContainer('container1');
+        $container->type();
 
         $this->assertTrue($container->deleteDir('/test-directory'));
     }
@@ -434,7 +438,7 @@ class ContainersTest extends PHPUnit_Framework_TestCase
             ];
 
             foreach ($requests as $request) {
-                $api->shouldReceive('request')
+                $api->expects('request')
                     ->with($request['method'], $request['url'], $request['params'])
                     ->andReturn($request['response']);
             }
@@ -463,7 +467,7 @@ class ContainersTest extends PHPUnit_Framework_TestCase
             ];
 
             foreach ($requests as $request) {
-                $api->shouldReceive('request')
+                $api->expects('request')
                     ->with($request['method'], $request['url'], $request['params'])
                     ->andReturn($request['response']);
             }
@@ -491,7 +495,7 @@ class ContainersTest extends PHPUnit_Framework_TestCase
             ];
 
             foreach ($requests as $request) {
-                $api->shouldReceive('request')
+                $api->expects('request')
                     ->with($request['method'], $request['url'], $request['params'])
                     ->andReturn($request['response']);
             }
@@ -503,7 +507,7 @@ class ContainersTest extends PHPUnit_Framework_TestCase
 
         $uploadedEtag = $container->uploadFromStream($path, $resource);
 
-        $this->assertInternalType('string', $uploadedEtag);
+        $this->assertIsString($uploadedEtag);
     }
 
     /** @test */
@@ -519,7 +523,7 @@ class ContainersTest extends PHPUnit_Framework_TestCase
             ];
 
             foreach ($requests as $request) {
-                $api->shouldReceive('request')
+                $api->expects('request')
                     ->with($request['method'], $request['url'], $request['params'])
                     ->andReturn($request['response']);
             }
@@ -531,7 +535,7 @@ class ContainersTest extends PHPUnit_Framework_TestCase
 
         $uploadedEtag = $container->uploadFromStream($path, $resource, ['extract-archive' => 'tar']);
 
-        $this->assertInternalType('string', $uploadedEtag);
+        $this->assertIsString($uploadedEtag);
     }
 
     /** @test */
@@ -544,7 +548,7 @@ class ContainersTest extends PHPUnit_Framework_TestCase
             ];
 
             foreach ($requests as $request) {
-                $api->shouldReceive('request')
+                $api->expects('request')
                     ->with($request['method'], $request['url'])
                     ->andReturn($request['response']);
             }
@@ -552,7 +556,14 @@ class ContainersTest extends PHPUnit_Framework_TestCase
 
         $storage = new CloudStorage($api);
         $container = $storage->getContainer('container1');
-        $container->delete();
+        $container->type();
+
+        try {
+            $container->delete();
+        } catch (Exception) {
+            $this->assertTrue(false);
+        }
+        $this->assertTrue(true);
     }
 
     public function getFileExistsRequest($container, $file)

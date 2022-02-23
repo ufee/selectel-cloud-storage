@@ -160,9 +160,9 @@ class Container implements ContainerContract, FilesTransformerContract, Countabl
     /**
      * JSON representation of container.
      *
-     * @return array
+     * @return array|mixed
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return [
             'name' => $this->name(),
@@ -231,7 +231,7 @@ class Container implements ContainerContract, FilesTransformerContract, Countabl
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return $this->filesCount();
     }
