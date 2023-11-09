@@ -1,4 +1,3 @@
-# argentcrusade/selectel-cloud-storage
 
 [![Build Status][ico-travis]][link-travis]
 [![StyleCI][ico-styleci]][link-styleci]
@@ -9,14 +8,14 @@
 Unofficial PHP SDK for [Selectel Cloud Storage](https://selectel.com/services/cloud-storage/) API.
 
 ## Requirements
-This package requires PHP 5.6 or higher.
+This package requires PHP 8.0 or higher.
 
 ## Installation
 
 You can install the package via composer:
 
 ``` bash
-$ composer require argentcrusade/selectel-cloud-storage
+$ composer require ufee/selectel-cloud-storage
 ```
 
 ## Usage

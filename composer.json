@@ -1,8 +1,8 @@
 {
-    "name": "argentcrusade/selectel-cloud-storage",
+    "name": "ufee/selectel-cloud-storage",
     "description": "Selectel Cloud Storage API",
-    "keywords": ["selectel"],
-    "homepage": "https://github.com/argentcrusade/selectel-cloud-storage",
+    "keywords": ["selectel","cloud","storage"],
+    "homepage": "https://github.com/ufee/selectel-cloud-storage",
     "license": "MIT",
     "require": {
         "php": ">=8.0",
