@@ -69,7 +69,7 @@ class Container implements ContainerContract, FilesTransformerContract, Countabl
         $this->containerName = $name;
         $this->data = $data;
         $this->dataLoaded = !empty($data);
-        $this->url = rtrim($api->storageUrl(), '/').'/'.$name;
+        $this->url = rtrim((string)$api->storageUrl(), '/').'/'.$name;
     }
 
     /**
